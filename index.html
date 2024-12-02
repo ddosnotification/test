@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRY FIND IT</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        body {
+            background: #ffffff;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 4rem;
+            margin: 3rem 0;
+            background: linear-gradient(45deg, #FF8C42, #9D4EDD);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            padding: 20px;
+        }
+
+        .box {
+            aspect-ratio: 1;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.05);
+        }
+
+        .box:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 14px 28px rgba(0,0,0,0.1);
+        }
+
+        .bitcoin {
+            width: 80px;
+            height: 80px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .bitcoin svg {
+            width: 100%;
+            height: 100%;
+            fill: currentColor;
+            opacity: 0.9;
+        }
+
+        @media (max-width: 768px) {
+            .title {
+                font-size: 2.5rem;
+                margin: 2rem 0;
+            }
+
+            .container {
+                grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+                gap: 15px;
+                padding: 15px;
+            }
+
+            .bitcoin {
+                width: 50px;
+                height: 50px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+    <h1 class="title">5 HIDDEN BITCOINS</h1>
+    <div class="container" id="boxContainer"></div>
+
+    <script>
+        const baseColors = {
+            pink: { base: '#FFB6C1', border: '#FF99A8' },
+            yellow: { base: '#FFE566', border: '#FFD700' },
+            green: { base: '#90EE90', border: '#66CD66' },
+            babyBlue: { base: '#87CEEB', border: '#5CACEE' },
+            orange: { base: '#FFA07A', border: '#FF8C42' },
+            purple: { base: '#B19CD9', border: '#9D4EDD' }
+        };
+
+        const colors = Object.values(baseColors);
+        let boxCount = 0;
+
+        function createBox() {
+            const box = document.createElement('div');
+            box.className = 'box';
+            const colorPair = colors[Math.floor(Math.random() * colors.length)];
+            box.style.backgroundColor = colorPair.base;
+            box.style.border = `2px solid ${colorPair.border}`;
+            
+            const bitcoin = document.createElement('div');
+            bitcoin.className = 'bitcoin';
+            bitcoin.style.color = colorPair.border;
+            bitcoin.innerHTML = `
+                <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M63.04 39.741c-4.274 17.143-21.638 27.575-38.783 23.301C7.12 58.768-3.313 41.404.962 24.262 5.234 7.117 22.597-3.317 39.737.957c17.144 4.274 27.576 21.64 23.302 38.784z"/>
+                    <path d="M46.11 27.441c.636-4.258-2.606-6.547-7.039-8.074l1.438-5.768-3.512-.875-1.4 5.616c-.922-.23-1.87-.447-2.812-.662l1.41-5.653-3.509-.875-1.439 5.766c-.764-.174-1.514-.346-2.242-.527l.004-.018-4.842-1.209-.934 3.75s2.605.597 2.55.634c1.422.355 1.68 1.296 1.636 2.042l-1.638 6.571c.098.025.225.061.365.117l-.37-.092-2.297 9.205c-.174.432-.615 1.08-1.609.834.035.051-2.552-.637-2.552-.637l-1.743 4.02 4.57 1.139c.85.213 1.683.436 2.502.646l-1.453 5.835 3.507.875 1.439-5.772c.958.26 1.888.5 2.798.726l-1.434 5.745 3.511.875 1.453-5.823c5.987 1.133 10.49.676 12.383-4.738 1.527-4.36-.075-6.875-3.225-8.515 2.294-.531 4.022-2.04 4.483-5.157zM38.087 38.69c-1.086 4.36-8.426 2.004-10.807 1.412l1.928-7.729c2.38.594 10.011 1.77 8.88 6.317zm1.085-11.312c-.99 3.966-7.1 1.951-9.083 1.457l1.748-7.01c1.983.494 8.367 1.416 7.335 5.553z" fill="#fff"/>
+                </svg>
+            `;
+            
+            box.appendChild(bitcoin);
+            box.style.animation = `fadeIn 0.5s ease forwards ${Math.random() * 0.5}s`;
+            return box;
+        }
+
+        function addBoxes(count = 8) {
+            const container = document.getElementById('boxContainer');
+            for (let i = 0; i < count; i++) {
+                container.appendChild(createBox());
+                boxCount++;
+            }
+        }
+
+        function checkScroll() {
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 1000) {
+                addBoxes();
+            }
+        }
+
+        // Initial boxes
+        addBoxes(16);
+
+        // Infinite scroll
+        window.addEventListener('scroll', checkScroll);
+
+        // Handle resize
+        window.addEventListener('resize', () => {
+            const container = document.getElementById('boxContainer');
+            if (container.offsetHeight < window.innerHeight) {
+                addBoxes();
+            }
+        });
+    </script>
+</body>
+</html>
